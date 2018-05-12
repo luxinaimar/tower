@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=no,minimal-ui">
+    <title>Tower</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0
+        }
+
+        img {
+            width: 100%
+        }
+
+        html {
+            background: #FFF;
+            height: 100%
+        }
+
+        body {
+            font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
+            margin: 0 auto;
+            text-align: center;
+            width: 100%;
+            height: 100%;
+            background: #F95240 url(./assets/main-bg.png)
+        }
+
+        @media screen and (min-height: 560px) {
+            html {
+                font-size: 100px
+            }
+        }
+
+        @media screen and (min-height: 640px) {
+            html {
+                font-size: 112.5px
+            }
+        }
+
+        @media screen and (min-height: 720px) {
+            html {
+                font-size: 125px
+            }
+        }
+
+        @media screen and (min-height: 800px) {
+            html {
+                font-size: 137.5px
+            }
+        }
+
+        @media screen and (min-height: 880px) {
+            html {
+                font-size: 150px
+            }
+        }
+
+        @media screen and (min-height: 960px) {
+            html {
+                font-size: 162.5px
+            }
+        }
+
+        @media screen and (min-height: 1040px) {
+            html {
+                font-size: 180px
+            }
+        }
+
+        @media screen and (min-height: 1200px) {
+            html {
+                font-size: 200px
+            }
+        }
+
+        html {
+            font-size: 17.6vh
+        }
+
+        #canvas {
+            position: fixed;
+            left: 0;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            margin: auto;
+        }
+
+        a {
+            text-decoration: none
+        }
+
+        li, ul, ol {
+            list-style-type: none;
+            padding: 0;
+            margin: 0
+        }
+
+        .hide {
+            display: none
+        }
+
+        .clear {
+            clear: both
+        }
+
+        .loading {
+            background-color: #F05A50;
+            height: 100%;
+            width: 100%;
+        }
+
+        .loading .main {
+            width: 60%;
+            margin: 0 auto;
+            color: #FFF
+        }
+
+        .loading .main img {
+            width: 60%;
+            margin: 1rem auto 0
+        }
+
+        .loading .main .title {
+            font-size: .3rem
+        }
+
+        .loading .main .text {
+            font-size: .15rem
+        }
+
+        .loading .main .bar {
+            height: .12rem;
+            width: 100%;
+            border: 3px solid #FFF;
+            border-radius: .6rem;
+            margin: .1rem 0;
+        }
+
+        .loading .main .bar .sub {
+            height: .1rem;
+            width: 98%;
+            margin: .008rem auto 0;
+        }
+
+        .loading .main .bar .percent {
+            height: 100%;
+            width: 0;
+            background-color: #FFF;
+            border-radius: .6rem;
+        }
+
+        .loading .logo {
+            position: absolute;
+            bottom: .3rem;
+            left: 0;
+            right: 0
+        }
+
+        .loading .logo img {
+            width: 1rem
+        }
+
+        .content {
+            height: 100vh;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .landing .title {
+            width: 60%;
+        }
+
+        .landing .logo {
+            width: 30%;
+            position: absolute;
+            right: .2rem;
+            top: .2rem;
+        }
+
+        .landing .action-2 {
+            position: absolute;
+            bottom: .2rem;
+            width: 100%;
+        }
+
+        .landing .start {
+            width: 65%;
+        }
+
+        .slideTop {
+            -webkit-animation: st 1s ease-in-out;
+            animation: st 1s ease-in-out;
+        }
+
+        @-webkit-keyframes st {
+            0% {
+                transform: translateZ(0)
+            }
+            100% {
+                transform: translate3d(0, -100%, 0)
+            }
+        }
+
+        @keyframes st {
+            0% {
+                transform: translateZ(0)
+            }
+            100% {
+                transform: translate3d(0, -100%, 0)
+            }
+        }
+
+        .slideBottom {
+            -webkit-animation: sb 1s ease-in-out;
+            animation: sb 1s ease-in-out;
+        }
+
+        @-webkit-keyframes sb {
+            0% {
+                transform: translateZ(0)
+            }
+            100% {
+                transform: translate3d(0, 200%, 0)
+            }
+        }
+
+        @keyframes sb {
+            0% {
+                transform: translateZ(0)
+            }
+            100% {
+                transform: translate3d(0, 200%, 0)
+            }
+        }
+
+        .swing {
+            -webkit-animation: sw 2s ease-in-out alternate infinite;
+            animation: sw 2s ease-in-out alternate infinite;
+        }
+
+        @-webkit-keyframes sw {
+            0% {
+                transform: rotate(5deg);
+                transform-origin: top center;
+            }
+            100% {
+                transform: rotate(-5deg);
+                transform-origin: top center;
+            }
+        }
+
+        @keyframes sw {
+            0% {
+                transform: rotate(5deg);
+                transform-origin: top center;
+            }
+            100% {
+                transform: rotate(-5deg);
+                transform-origin: top center;
+            }
+        }
+
+        .modal .mask {
+            background-color: #000;
+            opacity: .6;
+            position: fixed;
+            height: 100%;
+            width: 100%;
+            top: 0;
+            left: 0;
+        }
+
+        .modal .modal-content {
+            position: fixed;
+            height: 100%;
+            width: 90%;
+            margin-top: .3rem;
+            top: 0;
+        }
+
+        .modal .main {
+            width: 85%;
+            margin: 0 auto;
+        }
+
+        .modal .container {
+            position: relative
+        }
+
+        .modal .bg {
+            width: 100%;
+            position: absolute;
+            top: 0;
+            left: 0
+        }
+
+        .modal .modal-main {
+            width: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            margin-top: -0.4rem;
+        }
+
+        .modal .over-img {
+            width: 45%;
+            margin: .8rem auto 0
+        }
+
+        .modal .over-score {
+            margin-top: -0.2rem;
+            font-size: .5rem;
+            color: #FF735C;
+            text-shadow: -2px -2px 0 #FFF, 2px -2px 0 #FFF, -2px 2px 0 #FFF, 2px 2px 0 #FFF;
+        }
+
+        .modal .tip {
+            font-size: .16rem;
+            color: #9B724E;
+        }
+
+        .modal .over-button-b {
+            width: 70%;
+            margin: 0.1rem auto 0
+        }
+
+        .wxShare {
+            background: #000;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 11;
+            opacity: .9
+        }
+
+        .wxShare img {
+            width: 50%;
+            float: right;
+            margin: 10px 10px 0 0
+        }
+
+        @font-face {
+            font-family: 'wenxue';
+            src: url('./assets/wenxue.eot');
+            src: url('./assets/wenxue.eot'),
+            url('./assets/wenxue.woff'),
+            url('./assets/wenxue.ttf'),
+            url('./assets/wenxue.svg');
+        }
+
+        .font-wenxue {
+            font-family: 'wenxue';
+        }
+        .form-title{
+            height: 30px;
+            width: 200px;
+            line-height: 30px;
+            margin-bottom: 20px;
+        }
+        .form-info{
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+        }
+        .form-info p{
+            font-size: 16px;
+            color: #fff;
+        }
+        .form-btn{
+            display: block;
+            width: 100px;
+            height: 30px;
+            border-radius: 5px;
+            background: #fc9153;
+            color: #fff;
+            font-size: 16px;
+            margin: 0 auto;
+            cursor: pointer;
+            outline: none;
+        }
+        .form-btn:hover{
+            background: #e8864c;
+        }
+        .ranking-wrapper{
+            position: fixed;
+            right: 10%;
+            top: 25%;
+            font-size: 20px;
+            color: #fff;
+        }
+        .ranking-wrapper h1{
+            font-size: 24px;
+        }
+        .ranking-list{
+            margin-top: 20px;
+        }
+        .ranking-item{
+            width: 250px;
+            overflow: hidden;
+        }
+        .ranking-nick{
+            float: left;
+            width: 100px;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+        .ranking-score{
+            float: right;
+        }
+        .over-button-b{
+            display: block;
+            height: 50px;
+            background: #fc9153;
+            color: #fff;
+            border-radius: 15px;
+            font-size: 20px;
+            cursor: pointer;
+        }
+        .over-button-b:hover{
+            background: #e8864c;
+        }
+        .noExtension{
+            position: fixed;
+            right: 5%;
+            top: 5%;
+            text-align: center;
+            font-size: 18px;
+            line-height: 1;
+            color: #666;
+            margin-top: 20px;
+            z-index: 9999;
+        }
+        .noExtension a{
+            color: #fc9153;
+        }
+    </style>
+</head>
+<body>
+<div class="noExtension hide" id="noExtension">
+    提示: 请安装
+    <a target="_blank" href="https://github.com/ChengOrangeJu/WebExtensionWallet">WebExtensionWallet</a> 再进行游戏
+</div>
+<canvas id="canvas" class="hide"></canvas>
+<div class="content">
+    <div class="loading">
+        <div class="main"><img
+                src="./assets/main-loading.gif">
+            <div class="progress">
+                <div class="title font-wenxue">0%</div>
+                <div class="bar">
+                    <div class="sub">
+                        <div class="percent"></div>
+                    </div>
+                </div>
+                <div class="text">加载中</div>
+            </div>
+        </div>
+
+    </div>
+    <div class="landing hide">
+        <div class="action-1">
+            <img
+                    src="./assets/main-index-title.png"
+                    class="title swing">
+        </div>
+        <div class="action-2"><img id="start"
+                                   src="./assets/main-index-start.png"
+                                   class="start"></div>
+    </div>
+    <div id="modal" class="modal hide">
+        <div class="mask"></div>
+        <div class="js-modal-content modal-content">
+            <div class="main">
+                <div class="container"><img
+                        src="./assets/main-modal-bg.png"
+                        class="bg">
+                    <div class="modal-main">
+                        <div id="over-modal" class="hide js-modal-card"><img
+                                src="./assets/main-modal-over.png"
+                                class="over-img">
+                            <div id="score" class="over-score font-wenxue">0</div>
+                            <div id="over-zero" class="hide">
+                                <div class="tip">
+                                    <p>再来一次吧！</p>
+                                    <button class="over-button-b js-reload">再来一次</button>
+                                    <button class="over-button-b js-invite">加入排行榜</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="wxShare hide">
+        <div class="form-info">
+            <p>排行榜中只展示前10名哟！！！</p>
+            <input type="text" class="form-title" placeholder="请输入昵称">
+            <button class="form-btn">提交</button>
+        </div>
+    </div>
+    <div class="ranking-wrapper">
+        <h1>排行榜</h1>
+        <ul class="ranking-list">
+        </ul>
+    </div>
+</div>
+<script src="./dist/main.js"></script>
+<script src="./assets/zepto-1.1.6.min.js"></script>
+<script src=src/nebPay.js></script>
+<script src=src/nebulas.js></script>
+<script>
+  var domReady, loadFinish, canvasReady, loadError, gameStart, game, score, successCount
+  // init window height and width
+  var gameWidth = window.innerWidth
+  var gameHeight = window.innerHeight
+  var ratio = 1.5
+  if (gameHeight / gameWidth < ratio) {
+    gameWidth = Math.ceil(gameHeight / ratio)
+  }
+  $('.content').css({ "height": gameHeight + "px", "width": gameWidth + "px" })
+  $('.js-modal-content').css({ "width": gameWidth + "px" })
+
+  // loading animation
+  function hideLoading() {
+    if (domReady && canvasReady) {
+      $('#canvas').show()
+      loadFinish = true
+      setTimeout(function () {
+        $('.loading').hide()
+        $('.landing').show()
+      }, 1000)
+    }
+  }
+
+  function updateLoading(status) {
+    var success = status.success
+    var total = status.total
+    var failed = status.failed
+    if (failed > 0 && !loadError) {
+      loadError = true
+      alert('加载失败 请刷新后重试')
+      return
+    }
+    var percent = parseInt((success / total) * 100);
+    if (percent === 100 && !canvasReady) {
+      canvasReady = true
+      hideLoading()
+    }
+    percent = percent > 98 ? 98 : percent
+    percent = percent + '%'
+    $('.loading .title').text(percent);
+    $('.loading .percent').css({
+      'width': percent
+    })
+  }
+
+  function overShowOver() {
+    $('#modal').show()
+    $('#over-modal').show()
+    $('#over-zero').show()
+  }
+
+  // game customization options
+  const option = {
+    width: gameWidth,
+    height: gameHeight,
+    canvasId: 'canvas',
+    soundOn: true,
+    setGameScore: function (s) {
+      score = s
+    },
+    setGameSuccess: function (s) {
+      successCount = s
+    },
+    setGameFailed: function (f) {
+      $('#score').text(score)
+      if (f >= 3) overShowOver()
+    }
+  }
+
+  // game init with option
+  function gameReady() {
+    game = TowerGame(option)
+
+    game.load(function () {
+
+      game.playBgm()
+      game.init()
+
+    }, updateLoading)
+  }
+
+  var isWechat = navigator.userAgent.toLowerCase().indexOf("micromessenger") !== -1
+  if (isWechat) {
+    document.addEventListener("WeixinJSBridgeReady", gameReady, false)
+  } else {
+    gameReady()
+  }
+
+  function indexHide() {
+    $('.landing .action-1').addClass('slideTop')
+    $('.landing .action-2').addClass('slideBottom')
+    setTimeout(function () {
+      $('.landing').hide()
+    }, 950)
+  }
+
+  // click event
+  $('#start').on('click', function () {
+    if (gameStart) return
+    gameStart = true
+    indexHide()
+    setTimeout(game.start, 400)
+  })
+
+  $('.js-reload').on('click', function () {
+    window.location.href = window.location.href + '?s=' + (+new Date())
+  })
+
+  $('.js-invite').on('click', function () {
+    $('.wxShare').show()
+  })
+    //调用职能合约
+    var dappAddress = "n21hn45pibizNrtL8yojfxbft7sm1ZStCqc";
+    //模拟数据库，获取信息
+    var pageCnt = 100;
+    var page = 0;
+    var pageIndex = pageCnt*page;
+    function compare(prop) {
+        return function (obj1, obj2) {
+            var val1 = obj1[prop];
+            var val2 = obj2[prop];if (val1 > val2) {
+                return -1;
+            } else if (val1 < val2) {
+                return 1;
+            } else {
+                return 0;
+            }            
+        } 
+    }
+    function cbSearch(resp){
+        console.log(resp);
+        var messages = JSON.parse(resp.result);
+        messages.sort(compare("content"));
+        messages = messages.slice(0, 10);
+        //获取相关元素
+        var domDappList = $(".ranking-list");
+        var content="";
+        var len = messages.length;
+        if(len==0)return
+        for(var i=0;i<len;i++){
+            var bgIndex = i+1;
+            content += '<li class="ranking-item">'+
+                '<span class="ranking-nick">'+ messages[i].name +'</span><span class="ranking-score">'+ messages[i].content +'分</span>'+
+            '</li>';
+        }
+        domDappList.html(content);
+    }
+
+    var nebulas = require("nebulas"),
+        Account = nebulas.Account,
+        neb = new nebulas.Neb();
+    neb.setRequest(new nebulas.HttpRequest("https://mainnet.nebulas.io"));
+
+    function getData(cnt, index){
+        var from = Account.NewAccount().getAddressString();
+        var value = "0";
+        var nonce = "0"
+        var gas_price = "1000000"
+        var gas_limit = "2000000"
+        var callFunction = "forEach";
+        var callArgs = "[\"" + cnt + "\", \""+ index + "\"]"; //in the form of ["args"]
+        var contract = {
+            "function": callFunction,
+            "args": callArgs
+        }
+
+        neb.api.call(from,dappAddress,value,nonce,gas_price,gas_limit,contract).then(function (resp) {
+            cbSearch(resp)
+        }).catch(function (err) {
+            //cbSearch(err)
+            console.log("error:" + err.message)
+        })
+    }
+    getData(pageCnt,pageIndex);
+    var NebPay = require("nebpay");     //https://github.com/nebulasio/nebPay
+    var nebPay = new NebPay();
+    var serialNumber
+    $(".form-btn").click(function() {
+        var to = dappAddress;
+        var value = "0";
+        var callFunction = "save";
+        var date = new Date().toDateString();
+        var score = $('#score').text();
+        var callArgs = "[\"" + $(".form-title").val() + "\",\"" + score + "\",\"" + date + "\"]";
+
+        serialNumber = nebPay.call(to, value, callFunction, callArgs, {    //使用nebpay的call接口去调用合约,
+            listener: cbPush        //设置listener, 处理交易返回信息
+        });
+        //console.log(serialNumber)
+        window.location.href = window.location.href;
+        intervalQuery = setInterval(function () {
+            funcIntervalQuery();
+        }, 5000);
+    });
+    var intervalQuery
+
+    function funcIntervalQuery() {
+        //console.log(serialNumber)
+        nebPay.queryPayInfo(serialNumber)   //search transaction result from server (result upload to server by app)
+            .then(function (resp) {
+                console.log("tx result: " + resp)   //resp is a JSON string
+                var respObject = JSON.parse(resp)
+                if(respObject.code === 0){
+                    window.location.href=window.location.href;
+                    clearInterval(intervalQuery)
+                }
+            })
+            .catch(function (err) {
+                console.log(err);
+            });
+    }
+    function cbPush(resp) {
+        console.log("response of push: " + JSON.stringify(resp))
+    }
+  // listener
+  window.addEventListener('load', function () {
+    domReady = true
+    hideLoading()
+  }, false);
+</script>
+
+</body>
+</html>
